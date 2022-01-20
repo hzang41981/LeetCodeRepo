@@ -1,0 +1,93 @@
+# used in select only change the appearance in the select result
+
+# Any operation involved NULL returns unknown
+# IS NULL
+
+TRUE AND UNKNOWN => UNKNOWN
+FALSE OR UNKNOWN => UNKNOWN
+NOT UNKNOWN => UNKNOWN
+
+# substitute null(x) with y
+NVL(x, y)
+NVL2(x, x_not_null, x_is_null
+
+# string
+INITCAP()
+LOWER()
+UPPER()
+LENGTH()
+
+# position
+INSTR(st_to_search, st_to_find, [start_position,occurrence]) => position of the first char of st_to_find
+SUBSTR(input_string, position, length)
+
+SELECT name,
+SUBSTR(name,1,INSTR(name,',') - 1) AS "Last Name",
+SUBSTR(name, INSTR(name,',') + 1,INSTR(name,',',1,2)-INSTR(name,',')-1) AS "First Name",
+FROM contacts;
+
+# pad
+LPAD(input_string, length_after_pad, character_to_pad)
+LTRIM(input_string,[string_to_be_removed])
+REPLACE(string_search, string_to_replace, string_substitute)
+
+# date functions
+MONTH_BETWEEN(DATE1, DATE2)
+ADD_MONTHS(date1, n)
+NEXT_DAY(date,x)
+NEXT_DAY(orderdate,'MONDAY')
+EXTRACT(YEAR FROM date1)
+date1 - date2 = number of days
+
+TO_DATE(date_string, format define date_string)
+TO_DATE('March 31, 2009','Month DD, YYYY')
+
+
+# round and trunc
+ROUND(n,precision)
+ROUND(date1, [YEAR, MONTH])
+
+SELECT TRUNC(15.79,-1) "Truncate" FROM DUAL;
+  Truncate
+----------
+        10
+
+************************
+# type conversion
+************************
+# DATE, NUMBER <==> VARCHAR2, CHAR
+# conversion
+TO_CHAR(date_or_number, format)
+TO_CHAR('2021, 02, 01','YYYY, MM, DD')
+TO_CHAR(20000.00,'$9,990.99')
+TO_NUMBER(string_to_convert, format)
+
+
+# NULL
+NVL(value, value_to_be_substitute)
+NVL2(value, not_null, value_to_be_substitute)
+
+************************
+# aggregation functions
+************************
+
+# aggregation, COUNT includes NULL
+SUM, AVG, COUNT, MAX, MEDIAN, MIN STDDEV, VARIANCE
+
+COUNT(DISTINCT col1)
+
+************************
+# group by
+************************
+FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY
+
+# HAVING uses group functions to qualify
+
+
+# LISTAGG
+SELECT LISTAGG(isbn, ', ') WITHIN GROUP (ORDER BY retail desc) AS "List of ISBNs"
+
+# nesting group functions
+SELECT MAX(AVG(col1*col2)
+FROM table1
+GROUP BY col3;

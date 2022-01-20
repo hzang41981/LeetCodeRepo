@@ -1,0 +1,8 @@
+**************************
+# SQL*Loader
+**************************
+# source: csv, fixed length text file
+# control file:
+# data file: # ??
+# bad file:
+# log file:

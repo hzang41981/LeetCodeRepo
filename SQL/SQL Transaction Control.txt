@@ -1,0 +1,16 @@
+# transaction can be viewed as: 1) series of DML, 2) one DDL or DCL
+
+# COMMIT => save changes, erase savepoints,
+# implicit: 1) exit SQL+, 2) DDL or DCL issued, 3) autocommit on, 4) user exit SQL*PLUS;
+
+
+# ROLLBACK => cancel statements not yet committed
+# ROLLBACK return to a specified SAVEPOINT (SAVAPOINT A) or last COMMIT (without specified savepoint)
+
+ROLLBACK TO SAVEPOINT A;
+ROLLBACK;
+
+# if single DML is failed, one that statement is executed
+
+# data can only be viewed by current user before COMMIT
+#

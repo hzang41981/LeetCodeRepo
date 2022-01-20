@@ -1,0 +1,23 @@
+# without drop view AND without re-granting object privileges previously granted
+OR REPLACE
+
+# create even if the selected table does not exist
+FORCE
+
+# modification
+# no DML
+WITH READ ONLY
+# only rows retrieved
+WITH CHECK OPTION
+
+# drop view
+DROP VIEW view_name;
+
+# one as read only, one as they are
+CREATE OR REPLACE VIEW prices
+AS
+SELECT col1
+FROM price_table
+WITH READ ONLY
+CONSTRAINT price_view_only;
+

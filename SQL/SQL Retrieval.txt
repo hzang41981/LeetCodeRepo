@@ -1,0 +1,115 @@
+# order
+FROM
+WHERE
+GROUP BY
+HAVING (find all groups with characteristics)
+SELECT
+ORDER BY
+
+# GROUP BY
+# all non-agg expression in SELECT must be in the GROUP BY
+# expressions on GROUP BY does not need to be on SELECT
+
+
+# (!= ANY ()) != NOT IN #??
+# = ANY() EQUALS TO IN
+# != ALL() equals to NOT IN
+# MIN/MAX operator is NOT equal to ANY/ALL
+[NOT] IN (X,Y,Z)
+[NOT] BETWEEN A AND B
+[NOT] LIKE
+
+LIKE 'N__E'
+LIKE '%''%'
+LIKE '%\_%' ESCAPE '\'
+
+# ORDER OF OPERATIONS:
+1. ()
+2. Arithmatic
+3. Concatenation
+4. Comparison conditions
+5. IS [NOT] NULL, LIKE, IN
+6. BETWEEN AND
+7. NOT
+8. AND
+9. OR
+
+# NULL will be placed at the end
+ORDER BY sort_key_1 DESC [ASC], sort_key_2;
+# order by position, nulls first
+ORDER BY 2, 3 NULLS FIRST;
+
+# distinct
+SELECT DISTINCT col1
+FROM table1;
+
+# calculation without base table => dummy
+DESC dual;
+SELECT SYSTEM+30 'hah'
+FROM dual;
+
+****************
+# JOIN
+****************
+# cartesian product
+# 1. use CROSS JOIN, 2. omit/wrong join condition
+SELECT *
+FROM table1 CROSS JOIN table2;
+
+# equal join (inner join) equality between common columns
+# 1. NATURAL JOIN, 2. JOIN ... USING [ON], 3, WHERE
+
+# qualifying key required
+SELECT table1.col1
+FROM table1, table2
+WHERE table1.col1=table2.col1;
+
+# NO qualifying key required
+SELECT col1, col2, col3
+FROM table1 NATURAL JOIN table2;
+
+SELECT col1, col2, col3
+FROM table1 JOIN table2 USING (col2)
+    JOIN table3 USING (col4);
+
+# JOIN ON => require different name
+SELECT col1, col2, name2
+FROM table1 JOIN table2 On name2=name4;
+
+# NON-EQUALITY => based on non-equality relationships
+SELECT col1
+FROM table1, table2
+WHERE col1 BETWEEN col2 AND col3;
+
+SELECT col1
+FROM table1 JOIN table2 ON col1 BETWEEN col2 AND col3;
+
+# self-join qualifying key of all columns using alias
+SELECT c.customer# "#", c.lastname, c.firstname, r.customer# "#", r.lastname "Referred By"
+FROM customers c JOIN customers r ON c.referred = r.customer#;
+
+SELECT F.customer 'customer 1', S.customer 'customer 2'
+FROM customers F JOIN customers S ON F.customer < S.customer
+WHERE F.city=S.city
+
+# outer-join: LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN
+FROM table1 LEFT OUTER JOIN [RIGHT, FULL] table2 ON
+
+# set operations to combine result of two SELECT
+UNION, UNION ALL, INTERSECT, MINUS
+# UNION
+# union-compatible if: 1. same col name, 2. same number of columns
+# column name from the first query are used as the head of the result
+# by default, result are sorted in ascending order (except UNION ALL)
+
+query A
+MINUS
+query B
+
+
+
+
+
+
+
+

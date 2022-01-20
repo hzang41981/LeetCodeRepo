@@ -1,0 +1,25 @@
+# > ANY (subquery)
+# > ALL (subquery)
+WHERE (col1, col2) IN (SELECT col1, max(col2) FROM table1);
+
+# uncorrelated => inner pass to outer
+# correlated => process inner depends on outer
+WHERE EXISTS
+
+# NULL value
+
+# TOP N
+# 1. from a sorted subquery and use ROWNUM
+# 2. FETCH FIRST 5 ROWS ONLY | FIRST 30 PERCENT ROWS ONLY
+
+# next 5 rows
+ORDER BY
+OFFSET 5 ROWS
+FETCH NEXT 5 ROWS ONLY
+
+****************************
+# generate range of values
+****************************
+# use 1. UNION, 2. GROUP BY | CUBE, 3. CONNECT BY LEVEL<=5
+
+

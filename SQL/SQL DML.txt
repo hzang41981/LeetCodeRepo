@@ -1,0 +1,38 @@
+# data manipulation: insert, update, delete;
+
+# INSERT => one row at a time
+# char and date must be enclosed in ''
+# default col
+# some value can be NULL
+# special value: NULL, SYSDATE, USER, DEFAULT, DATE
+INSERT INTO name [(col1, col2)]
+VALUES (value1[, value2]);
+
+# insert with subquery
+INSERT INTO table1
+SELECT col1, col2
+FROM table2;
+
+# create table with subquery
+CREATE TABLE table1 [(col1, col2)]
+AS
+SELECT col_one, col_two
+FROM table2;
+
+# virtual column
+# cannot add value
+ALTER TABLE table1
+ADD (col3 AS (col1+col2));
+
+# update data WHERE clause identifies the rows to be updated
+UPDATE table1
+SET col1=val1, col2=val2
+WHERE col1=10;
+
+# DELETE ROWS
+DELETE FROM table1 WHERE col1=val1;
+
+TRUNCATE TABLE table1
+
+
+

@@ -1,0 +1,181 @@
+# data definition: create, alter, drop, rename;
+
+**************
+# ALTER TABLE => add/delete col, change col characteristics, create/delete constraint, modify constraint definition
+**************
+# UNUSED (delay drop table)
+# 1. set unused
+ALTER TABLE table_name
+SET UNUSED (COL1);
+
+# 2. drop unused COLUMNS
+ALTER TABLE table_name
+DROP UNUSED COLUMNS;
+
+# add col to tabel by ALTER
+ALTER TABLE TABLE_NAME
+ADD (COL3 DATE DEFAULT SYSDATE);
+
+# MODIFY change existing characteristics: default value (will not affect current value), >= current width/cover current domain
+ALTER TABLE TABLE_NAME
+MODIFY (COL1 VARCHAR2(15));
+
+# ??
+# modify default => how about current NULL? => will not affect current value
+ALTER TABLE table1
+MODIFY (col1 DEFAULT SYSDATE + 7);
+
+# DROP COL
+ALTER TABLE TABLE_NAME
+DROP COLUMN COL1;
+
+# add constraints
+ALTER TABLE table1
+ADD CONSTRAINT table1_check1 CHECK (col1 > 0);
+
+# modify constraints
+ALTER TABLE table1
+MODIFY (col1 CONSTRAINT table1_modified NOT NULL);
+
+# drop constraints
+ALTER TABLE table1
+DROP PRIMARY KEY | UNIQUE (col1) | CONSTRAINT table1_constraint1
+
+# disable and enable constraints
+ALTER TABLE table1
+DISABLE CONSTRAINT table1_ck1
+
+ALTER TABLE table1
+ENABLE CONSTRAINT table1_ck1
+
+# cascade constraints when drop parent key cols and multi-col constraint
+ALTER TABLE table1
+DROP CONSTRAINT ck1 CASCADE CONSTRAINTS;
+
+ALTER TABLE table1
+DROP CONSTRAINT (ck1, ck2);
+
+# describe table
+DESCRIBE table_name;
+
+# RENAME
+# 1. TABLE
+RENAME TABLE1 TO TABLE_ONE
+# 2. COL
+ALTER TABLE TABLE_NAME
+RENAME COLUMN COL1 TO COL_ONE
+
+*************
+# INSERT
+*************
+INSERT INTO table_name VALUES ('Hah', 22);
+
+#partial insert by only list the inserted column name
+INSERT INTO table_name (COL1#, COL2) VALUES ('Hah', 22);
+
+*************
+# DELETE columns
+*************
+DELETE FROM table_name WHERE col1 = 'Hah';
+
+*************
+# DROP TABLE
+*************
+# drop table
+DROP TABLE table_name;
+# oracle recycle bin (PURGE => remove without placing into bin)
+DROP TABLE TABLE_NAME PURGE;
+
+# query recycle bin like table
+SELECT object_name, original_name
+FROM recyclebin;
+
+PURGE "object_name";
+
+PURGE RECYCLEBIN;
+
+# recover deleted tables
+FLASHBACK TABLE table_name
+TO BEFORE DROP;
+
+*************
+# SELECT
+*************
+# col alias => add "" if contains blank space, special symbol, retain case
+SELECT COL1 AS "COL ONE" FROM TABLE_NAME;
+
+# arithmatic operations (col1 - col2)
+SELECT col1, (col2 - col1) as profit
+FROM TABLE_NAME
+WHERE (col2-col1) > 2
+
+# concatenation
+SELECT COL1 || ' ' || COL2
+FROM TABLE_NAME
+
+
+*****************
+# CREATE
+*****************
+# NULL, DEFAULT,
+CREATE TABLE table_name (col1 VARCHAR2(12) NOT NULL, col2 NUMBER(7,2) DEFAULT 0, col3 DATE DEFAULT SYSDATE);
+# table level constraints
+CREATE TABLE table1 (col1 CHAR(2), col2 NUMBER(7,2),
+CONSTRAINT table1_col1_PK PRIMARY KEY (col1),
+CONSTRAINT tabel1_col2_FK FOREIGN KEY (col2) REFERENCES table2 (col1));
+# col level constraints
+CREATE TABLE table1 (col1 CHAR(2)
+    CONSTRAINTS table1_col1_uk UNIQUE (col1)
+    CONSTRAINTS table1_col1_PK PRIMARY KEY, col2 NUMBER(7,2) REFERENCES table2 (col1));
+
+
+*************
+# constraints
+*************
+PRIMARY KEY (PK), FOREIGN KEY (FK), CHECK (CK), UNIQUE (UK), NOT NULL (NN)
+# name conventions: tablename_colname_constrainttype
+
+# col level definition:
+column_name Data_Type [CONSTRAINT constraint_name] Constraint_Type
+# table level definition:
+[CONSTRAINT constraint_name] Constraint_Type (column_name, ...)
+
+# PK
+CREATE TABLE price
+(item_id VARCHAR2(10) CONSTRAINT price_itemId_PK PRIMARY KEY);
+CREATE TABLE pirce
+(item_id VARCHAR2(10), CONSTRAINT price_itemId_PK PRIMARY KEY (item_id));
+
+# FK
+CREATE TABLE price
+(item_id VARCHAR2(10), customer_id VARCHAR2(10) CONSTRAINT price_customer_id_FK REFERENCES customer (c_id));
+CREATE TABLE pirce
+(item_id VARCHAR2(10), customer_id VARCHAR2(10), CONSTRAINT price_customer_id_PK FOREIGN KEY (customer_id) REFERENCES customer (c_id));
+
+# CASCADE CONSTRAINTS => drops all constraints on the col (used with DROP COLUMN)
+# If other columns used by the constraints defined on the dropped column are also dropped within the same statement, no need.
+ALTER TABLE table_name
+DROP (col1) CASCADE CONSTRAINTS;
+
+
+# add constraints
+ALTER TABLE table1
+ADD CONSTRAINT table1_check1 CHECK (col1 > 0);
+
+# modify constraints
+ALTER TABLE table1
+MODIFY (col1 CONSTRAINT table1_modified NOT NULL);
+
+# drop constraints
+ALTER TABLE table1
+DROP PRIMARY KEY | UNIQUE (col1) | CONSTRAINT table1_constraint1;
+
+# disable constraints (temporarily)
+ALTER TABLE table1
+DISABLE [ENABLE] CONSTRAINT constraint_name;
+
+
+
+
+
+

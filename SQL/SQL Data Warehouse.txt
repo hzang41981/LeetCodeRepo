@@ -1,0 +1,71 @@
+************************
+# extension to group by
+************************
+
+SELECT name, category, COUNT(isbn), AVG(retail)
+FROM publisher JOIN books USING (pubid)
+GROUP BY GROUPING SETS((name, category), name, category,());
+
+SELECT region, state, COUNT(DISTINCT order#) AS "# Orders", TO_CHAR(SUM((paideach-cost)*quantity),'$9990.99') AS "Profit"
+FROM books JOIN orderitems USING (isbn)
+JOIN orders USING (order#)
+JOIN customers USING (customer#)
+GROUP BY ROLLUP (region, state)
+ORDER BY 1,2;
+
+############
+GROUP BY ROLLUP(a, b, c)
+==
+GROUP BY GROUPING SETS ((a,b,c), (a,b), a, ())
+############
+
+############
+GROUP BY CUBE(a, b, c)
+==
+GROUP BY GROUPING SETS ((a,b,c), (a,b), (a,c), (b,c), a, b, c, ())
+############
+
+
+**********
+# conditional
+**********
+DECODE(c,'CA',0.9,'FL',0.7,...,[default_value])
+
+# simple case
+SELECT (CASE col1 WHEN 'CA' THEN 0.9 WHEN 'FL' THEN 0.7 ELSE 0.00 END) AS 'COL_ONE'
+# search case
+SELECT (CASE WHEN col1<30 THEN 0.9 ELSE 0.7 END) AS 'COL_ONE'
+
+# pivot table
+SELECT category, DECODE(id, 1, 1) AS 'ID 1', DECODE(id,2,1) AS 'ID 2'
+FROM table1;
+
+*******************
+# hierarchical query
+*******************
+# represent recursive "one-to-many"
+START WITH id=100 CONNECT BY PRIOR id = parent_id # 100 is the starting point
+# pseudo LEVEL
+
+# !!
+SELECT LEVEL,
+LPAD(' ', 3*(LEVEL - 1)) || employee_ID || ' ' || first_name || ' ' || last_name "Employee", department_id
+FROM employee2
+[WHERE]
+START WITH employee_ID = 100 OR employee_ID = 101 # show more than one tree
+CONNECT BY PRIOR employee_ID = manager_ID;
+
+# traverse tree upward
+SELECT LEVEL,
+LPAD(' ', 3*(LEVEL - 1)) || employee_ID || ' ' || first_name || ' ' || last_name "Employee", department_id
+FROM employee2
+START WITH employee_ID = 101 OR employee_ID = 102
+CONNECT BY PRIOR manager_ID = employee_ID;
+
+# pruning sub-trees => AND in CONNECT BY PRIOR
+SELECT LEVEL,
+LPAD(' ', 3*(LEVEL - 1)) || employee_ID || ' ' || first_name || ' ' || last_name "Employee", department_id
+FROM employee2
+[WHERE]
+START WITH employee_ID = 100 OR employee_ID = 101 # show more than one tree
+CONNECT BY PRIOR employee_ID = manager_ID AND (employee_ID != 103 AND employee_ID != 205);

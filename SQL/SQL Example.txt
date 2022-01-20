@@ -1,0 +1,7 @@
+# unequal join
+# For each pair of customers located in the same city, list the customer number, customer last name, and the city
+SELECT F.customer_number || '-' || F.customer_last_name 'customer 1',
+S.customer_number || '-' || S.customer_last_name 'customer 2'
+FROM customers F JOIN customers S ON (F.customer_number < S.customer_number)
+WHERE F.address=S.address;
+

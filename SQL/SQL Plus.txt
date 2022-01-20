@@ -1,0 +1,16 @@
+# execute SQL Statements/Commands, formate query results, create file that store SQL Statements and results;
+SET ECHO [ON|OFF]
+SET FEEDBACK [ON|OFF]
+SET PAGESIZE n
+SET LINESIZE n
+SET TIMING [ON|OFF] #??
+
+RUN or \
+# save the current SQL buffer in a file
+SAVE filename
+# place the stored statement in the buffer without executing the statement
+GET filename #??
+# run command in the script of SQL+
+START filename
+@filename
+SPOOL filename
